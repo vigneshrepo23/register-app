@@ -6,6 +6,15 @@ pipeline {
         jdk "java17"
         maven "maven3"
     }
+    environment {
+        APP_NAME = "registerapp"
+        RELEASE = "1.0.0"
+        DOCKER_USER = "vigneshrepo23"
+        DOCKER_PASS = "docker-token"
+        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}" + "${BUILD_NUMBER}"
+    }
+
     stages {
         stage ("clean workspace") {
             steps {
@@ -44,6 +53,14 @@ pipeline {
                 timeout(time: 1, unit: 'MINUTES') {
                 waitForQualityGate abortPipeline: true
                }
+            }
+        }
+
+        stage ("buld image") {
+            steps {
+                docker.withRegistry('',DOCKER_PASS) {
+                        docker_image = docker.build "${IMAGE_NAME}"
+                }
             }
         }
     }
