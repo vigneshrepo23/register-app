@@ -18,5 +18,17 @@ pipeline {
                 git branch: "main", crendentialsID: "gitcred", url: "https://github.com/vigneshrepo23/register-app"
             }
         }
+
+        stage ("build") {
+            steps {
+                sh "mvn clean package"
+            }
+        }
+
+        stages ("test") {
+            steps {
+                sh "mvn test"
+            }
+        }
     }
 }
