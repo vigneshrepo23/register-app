@@ -13,7 +13,7 @@ pipeline {
             }
         }
         
-        stage {'git checkout'} {
+        stage {'checkout'} {
             steps {
                 git branch: 'main', credentialsId: 'gitcred', url: 'https://github.com/vigneshrepo23/register-app'
             }
