@@ -63,7 +63,12 @@ pipeline {
         } 
         stage ('trivy') {
             steps {
-                sh "trivy image ${IMAGE_NAME} > trivyreport.txt"
+                sh "trivy image ${IMAGE_NAME} > /home/ubuntu/trivyreport.txt"
+            }
+        }
+        stage ('artifacts cleanup') {
+            steps {
+                sh 'docker rmi ${DOCKER_USER}/${APP_NAME}'
             }
         }
     } 
