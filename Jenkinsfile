@@ -6,6 +6,14 @@ pipeline {
         jdk 'java17'
         maven 'maven3'
     }
+    environment {
+        APP_NAME = "registerapp"
+        RELEASE = "1.0.0"
+        DOCKER_USER = "vigneshrepo23"
+        DOCKER_PASS = "dockerpass"
+        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}" + "${BUILD_NUMBER}"
+    }
     stages {
         stage ('cleanws') {
             steps {
@@ -39,6 +47,17 @@ pipeline {
                 timeout(time: 1, unit: 'MINUTES') {
                 waitForQualityGate abortPipeline: true
                }
+            }
+        }
+        stage('docker build & push') {
+            steps {
+                script {
+                    docker.withRegistry('',DOCKER_PASS) {
+                        docker_image = docker.build "${IMAGE_NAME}"
+                    }
+                    docker.withRegistry('',DOCKER_PASS) {
+                        docker_image.push(${IMAGE_TAG})
+                }
             }
         }
     } 
