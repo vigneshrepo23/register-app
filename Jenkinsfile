@@ -63,7 +63,7 @@ pipeline {
         } 
         stage ('trivy') {
             steps {
-                sh 'trivy image ${IMAGE_NAME}' > trivyreport.txt
+                sh "trivy image ${IMAGE_NAME} > trivyreport.txt"
             }
         }
     } 
