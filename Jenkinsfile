@@ -68,7 +68,7 @@ pipeline {
         }
         stage ('artifacts cleanup') {
             steps {
-                sh 'docker rmi ${DOCKER_USER}:${APP_NAME}'
+                sh 'docker rmi ${IMAGE_NAME}:${IMAGE_TAG}'
             }
         }
         
